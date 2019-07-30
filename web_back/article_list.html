@@ -107,7 +107,7 @@
         <td class="text-center">{{ele.date}}</td>
         <td class="text-center">{{ele.state}}</td>
         <td class="text-center">
-            <a href="post-edit.html?id=996" class="btn btn-default btn-xs">编辑</a>
+            <a href="article_edit.html?id=996" class="btn btn-default btn-xs">编辑</a>
             <a href="javascript:;" data-id="{{ele.id}}" class="btn_del btn btn-danger btn-xs">删除</a>
         </td>
     </tr>
@@ -136,9 +136,9 @@
 
         // 查询
         function doQuery() {
-            console.log('currentType',currentType);
-            console.log('currentPageNumber',currentPageNumber);
-            console.log('currentState',currentState);
+            console.log('currentType', currentType);
+            console.log('currentPageNumber', currentPageNumber);
+            console.log('currentState', currentState);
             // 1.调接口
             $.getJSON("http://localhost:8000/admin/search",
                 { page: currentPageNumber, type: currentType, state: currentState },
@@ -146,24 +146,31 @@
                     // console.log(res)
 
                     $("#tbody").html(template("template_article", res));
+                    if (res.totalPage !== currentTotalpages) {
+                        // 判断条件，给总页数设置成当前页数
+                        currentTotalpages = res.totalPage
+                        // 销毁整个插件
+                        $(".pagination").twbsPagination("destroy");
 
-                    // 分页
-                    $('.pagination').twbsPagination({
-                        currentPage: 1,  // 初始页
-                        totalPages: res.totalPage,  // 总页数，可以通过翻页，或者最后一页
-                        startPage: 1,
-                        visiblePages: 4, // 可见页码
-                        first: "首页",
-                        last: "未页",
-                        prev: '上一页',
-                        next: '下一页',
-                        initiateStartPageClick: false,
-                        onPageClick: function (event, page) {
-                            currentPageNumber = page;
-                            // console.log(event, page);
-                            doQuery()
-                        }
-                    });
+                        // 重新生成当前页面
+                        $('.pagination').twbsPagination({
+                            currentPage: 1,  // 初始页
+                            totalPages: res.totalPage,  // 总页数，可以通过翻页，或者最后一页
+                            startPage: 1,
+                            visiblePages: 4, // 可见页码
+                            first: "首页",
+                            last: "未页",
+                            prev: '上一页',
+                            next: '下一页',
+                            initiateStartPageClick: false,
+                            onPageClick: function (event, page) {
+                                currentPageNumber = page;
+                                // console.log(event, page);
+                                doQuery()
+                            }
+                        });
+                    }
+
                 })
         }
 
@@ -202,9 +209,6 @@
 
         // 筛选
         $("#btnSearch").click(function () {
-
-
-
             // 获取用户选中的文章的类别
             currentType = parseInt($("#selCategory").val());
             // console.log(currentType);
