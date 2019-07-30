@@ -62,7 +62,7 @@
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-2 control-label">文章内容：</label>
                     <div class="col-sm-10">
-                        <textarea class="form-control" id="rich_content" name="content" placeholder="文章内容">
+                        <textarea class="form-control" id="rich_content"  placeholder="文章内容">
                             Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda fugiat illo nihil molestias ab. Laborum eius non atque, totam sapiente quae obcaecati assumenda ratione inventore pariatur maiores, qui libero delectus.
                             </textarea>
                     </div>
@@ -100,6 +100,10 @@
         // debugger;
         function doAdd() {
             var fd = new FormData(document.getElementById('myform'))
+
+            fd.append("state", "已发布");
+            // content通过富文本编辑器来获取
+            fd.append("content", tinyMCE.activeEditor.getContent())
             $.ajax({
                 url: 'http://localhost:8000/admin/article_publish',
                 type: 'post',
@@ -110,7 +114,7 @@
                     console.log(res);
                     if (res.code === 201) {
                         // 跳转
-                        window.location.href = "./article_list.html"
+                        // window.location.href = "./article_list.html"
                     } else if (res.code === 400) {
                         alert(res.msg);
                         return;
