@@ -101,13 +101,13 @@
     <script type="text/html" id="template_article">
     {{each data ele}}
     <tr>
-        <td></td>
-        <td>{{ele.title}}</td>
+        <td>{{ele.title}} </td>
         <td>{{ele.author}}</td>
+        <td>{{ele.type}}</td>
         <td class="text-center">{{ele.date}}</td>
         <td class="text-center">{{ele.state}}</td>
         <td class="text-center">
-            <a href="article_edit.html?id=996" class="btn btn-default btn-xs">编辑</a>
+            <a href="article_edit.html?id={{ele.id}}" class="btn btn-default btn-xs">编辑</a>
             <a href="javascript:;" data-id="{{ele.id}}" class="btn_del btn btn-danger btn-xs">删除</a>
         </td>
     </tr>
@@ -139,9 +139,9 @@
 
         // 查询
         function doQuery() {
-            console.log('currentType', currentType);
-            console.log('currentPageNumber', currentPageNumber);
-            console.log('currentState', currentState);
+            // console.log('currentType', currentType);
+            // console.log('currentPageNumber', currentPageNumber);
+            // console.log('currentState', currentState);
             // 1.调接口
             $.getJSON("http://localhost:8000/admin/search",
                 { page: currentPageNumber, type: currentType, state: currentState },
