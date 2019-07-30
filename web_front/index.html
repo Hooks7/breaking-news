@@ -28,7 +28,7 @@
         <div class="menu">
             <div class="menu_collapse fl">
                 <a href="javascript:;" class="level_one"><i class="fa fa-list-ul"></i>全部分类</a>
-                <ul class="level_two" >
+                <ul class="level_two">
                     <li class="up"></li>
                     <li><a href="#">最 新</a></li>
                     <li><a href="#">科 技</a></li>
@@ -227,12 +227,12 @@
     {{each data ele i}}
     {{if i === 0}}
     <li class="first">
-        <a href="article.html"><img src="{{ele.cover}}" alt="{{ele.title}}"></a>
+        <a href="article.html?id={{ele.id}}"><img src="{{ele.cover}}" alt="{{ele.title}}"></a>
         <p>{{ele.title}}</p>
     </li>
     {{else}}
     <li>
-        <a href="article.html"><img src="{{ele.cover}}" alt="{{ele.title}}"></a>
+        <a href="article.html?id={{ele.id}}"><img src="{{ele.cover}}" alt="{{ele.title}}"></a>
         <p>{{ele.title}}</p>
     </li>
     {{/if}}
@@ -241,13 +241,17 @@
     <script>
         // 获取最新文章
         // 文章搜索接口
-        $.getJSON("http://localhost:8000/admin/search", { perpage: 5 }, function (res) {
-            console.log(res);
+        /*魔法数*/ var focus_list_number = 5;
+        function getlastest() {
+            $.getJSON("http://localhost:8000/admin/search", { perpage: focus_list_number }, function (res) {
+                console.log(res);
 
-            var htmlStr = template('templateStr', res);
-            console.log(htmlStr)
-            $('#level').html(htmlStr)
-        })
+                var htmlStr = template('templateStr', res);
+                console.log(htmlStr)
+                $('#level').html(htmlStr)
+            })
+        }
+        getlastest();
     </script>
 </body>
 
