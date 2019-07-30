@@ -129,7 +129,10 @@
         var currentType = ""
         // 要查询的文章的状态。如果为空，就是查所有的类型
         var currentState = ""
+        // 设置下拉插件当前总页数
+        var currentTotalpages = ''
         // 设置左侧菜单
+
         $('#release_btn').click(function () {
             window.parent.setMenu(1, 1);
         })
@@ -147,12 +150,11 @@
 
                     $("#tbody").html(template("template_article", res));
                     if (res.totalPage !== currentTotalpages) {
-                        // 判断条件，给总页数设置成当前页数
-                        currentTotalpages = res.totalPage
-                        // 销毁整个插件
+                        currentTotalpages = res.totalPage;
+                        //销毁整个插件
                         $(".pagination").twbsPagination("destroy");
 
-                        // 重新生成当前页面
+                        //重新生成分页插件
                         $('.pagination').twbsPagination({
                             currentPage: 1,  // 初始页
                             totalPages: res.totalPage,  // 总页数，可以通过翻页，或者最后一页
@@ -164,9 +166,11 @@
                             next: '下一页',
                             initiateStartPageClick: false,
                             onPageClick: function (event, page) {
+                                // page： 当前是第几页
+                                console.log(page)
                                 currentPageNumber = page;
-                                // console.log(event, page);
-                                doQuery()
+                                // 发请求：求第page页的数据。
+                                doQuery();
                             }
                         });
                     }
